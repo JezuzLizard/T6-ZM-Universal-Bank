@@ -83,20 +83,19 @@ withdraw_logic( amount )
 		return;
 	}
 	num_score = int( floor( self.score / 1000 ) );
-	if ( is_str_int( amount ) )
+	num_amount = int( amount );
+	if ( amount == "all" )
 	{
-		num_amount = int( amount );
+		num_amount = self.account_value;
+	}
+	else if ( num_amount > 0 )
+	{
 		if ( num_amount < 1000 )
 		{
 			self iPrintLn( "Withdraw failed: Value must be 1000 or greater" );
 			return;
 		}
-		divided_value = num_amount / 1000;
-		num_amount = int( floor( divided_value ) );
-	}
-	else if ( amount == "all" )
-	{
-		num_amount = self.account_value;
+		num_amount = int( floor( num_amount / 1000 ) );
 	}
 	else 
 	{
@@ -146,20 +145,19 @@ deposit_logic( amount )
 		return;
 	}
 	num_score = int( floor( self.score / 1000 ) );
-	if ( is_str_int( amount ) )
+	num_amount = int( amount );
+	if ( amount == "all" )
 	{
-		num_amount = int( amount );
+		num_amount = num_score;
+	}
+	else if ( num_amount > 0 )
+	{
 		if ( num_amount < 1000 )
 		{
 			self iPrintLn( "Deposit failed: Value must be 1000 or greater" );
 			return;
 		}
-		divided_value = num_amount / 1000;
-		num_amount = int( floor( divided_value ) );
-	}
-	else if ( amount == "all" )
-	{
-		num_amount = num_score;
+		num_amount = int( floor( num_amount / 1000 ) );
 	}
 	else 
 	{
@@ -194,37 +192,4 @@ deposit_logic( amount )
 balance_logic()
 {
 	self iPrintLn( "Current balance: " + self.account_value * 1000 + " Max: 250000" );
-}
-
-is_str_int( str )
-{
-	val = 0;
-	list_num = [];
-	list_num[ "0" ] = val;
-	val++;
-	list_num[ "1" ] = val;
-	val++;
-	list_num[ "2" ] = val;
-	val++;
-	list_num[ "3" ] = val;
-	val++;
-	list_num[ "4" ] = val;
-	val++;
-	list_num[ "5" ] = val;
-	val++;
-	list_num[ "6" ] = val;
-	val++;
-	list_num[ "7" ] = val;
-	val++;
-	list_num[ "8" ] = val;
-	val++;
-	list_num[ "9" ] = val;
-	for ( i = 0; i < str.size; i++ )
-	{
-		if ( !isDefined( list_num[ str[ i ] ] ) )
-		{
-			return false;
-		}
-	}
-	return true;
 }
